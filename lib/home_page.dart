@@ -1,5 +1,4 @@
-import 'dart:math';
-
+import 'package:codigo6_bmi/bmi_brain.dart';
 import 'package:flutter/material.dart';
 
 class HomePage extends StatefulWidget {
@@ -12,26 +11,11 @@ class _HomePageState extends State<HomePage> {
   double weight = 60;
   double bmi = 0;
   int indice = 0;
-  List<Map<String,String>> datos = [
-    {
-      "result": "Bajo Peso",
-      "recomendacion": "Consulte a su nutricionista para una dieta saludable.",
-      "imgSrc": "assets/images/image1.png"
-    },
-    {
-      "result": "Normal",
-      "recomendacion": "Muy bien! Siga con su vida saludable.",
-      "imgSrc": "assets/images/image2.png"
-    },
-    {
-      "result": "Sobrepeso",
-      "recomendacion": "Haga ejercicio y una dieta saludable.",
-      "imgSrc": "assets/images/image3.png"
-    },
-  ];
   String result = "";
   String recomendacion = "";
   String imgSrc = "assets/image";
+
+  BMIBrain mandarina = BMIBrain(height: 0, weight: 0);
 
   @override
   Widget build(BuildContext context) {
@@ -169,14 +153,9 @@ class _HomePageState extends State<HomePage> {
                 width: double.infinity,
                 child: ElevatedButton(
                   onPressed: () {
-                    bmi = weight / pow((height/100), 2);
-                    if(bmi < 18){
-                      indice = 0;
-                    }else if(bmi < 25){
-                      indice = 1;
-                    }else {
-                      indice = 2;
-                    }
+                    mandarina.height = height;
+                    mandarina.weight = weight;
+                    bmi = mandarina.bmiCalculator();
                     setState(() {});
                   },
                   child: const Text("Calcular"),
@@ -198,7 +177,7 @@ class _HomePageState extends State<HomePage> {
                             ),
                           ),
                           Text(
-                            bmi.toStringAsFixed(2),
+                            bmi.toStringAsFixed(1),
                             style: const TextStyle(
                               fontFamily: "Noto Sans",
                               fontSize: 30.0,
@@ -207,7 +186,7 @@ class _HomePageState extends State<HomePage> {
                             ),
                           ),
                           Text(
-                            datos[indice]["result"]!,
+                            mandarina.getResult(),
                             style: const TextStyle(
                               fontFamily: "Noto Sans",
                               fontSize: 18.0,
@@ -223,7 +202,7 @@ class _HomePageState extends State<HomePage> {
                             ),
                           ),
                           Text(
-                            datos[indice]["recomendacion"]!,
+                            mandarina.getRecomendacion(),
                             style: const TextStyle(
                               fontFamily: "Noto Sans",
                               fontSize: 16.0,
@@ -233,7 +212,7 @@ class _HomePageState extends State<HomePage> {
                         ],
                       ),
                       Image.asset(
-                        datos[indice]["imgSrc"]!,
+                        mandarina.getImageSrc(),
                         height: 160.0,
                       ),
                     ],
