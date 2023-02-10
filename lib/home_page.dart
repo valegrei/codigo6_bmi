@@ -10,11 +10,6 @@ class _HomePageState extends State<HomePage> {
   double height = 150;
   double weight = 60;
   double bmi = 0;
-  int indice = 0;
-  String result = "";
-  String recomendacion = "";
-  String imgSrc = "assets/image";
-
   BMIBrain mandarina = BMIBrain(height: 0, weight: 0);
 
   @override
